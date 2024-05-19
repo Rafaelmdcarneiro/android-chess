@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        config {
+            storeFile file('../../android-keystore')
+        }
+    }
+    compileSdkVersion 33
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        applicationId "jwtc.android.chess"
+        minSdkVersion 21
+        targetSdkVersion 33
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+    flavorDimensions "deps"
+    productFlavors {
+        playStore {
+            dimension "deps"
+        }
+        foss {
+            dimension "deps"
+        }
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path file('../native/project/jni/Android.mk')
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.mediarouter:mediarouter:1.0.0'
+    playStoreImplementation 'com.google.android.gms:play-services-cast:16.1.2'
+}
